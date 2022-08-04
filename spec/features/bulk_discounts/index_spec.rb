@@ -22,9 +22,15 @@ RSpec.describe 'discounts index' do
     within "#discount-#{@discount_2.id}" do
       expect(page).to have_link("#{@discount_2.percent}% off #{@discount_2.quantity} items")
     end
-    expect(page).to_not have_link("5o% off 50 items")
+    expect(page).to_not have_link("50% off 50 items")
 
     click_link "10% off 10 items"
     expect(current_path).to eq(merchant_bulk_discount_path(@merchant1, @discount_1))
+  end
+
+  it 'can create a discount' do
+    expect(page).to have_link("Create Discount")
+    click_link "Create Discount"
+    expect(current_path).to eq(new_merchant_bulk_discount_path(@merchant1))
   end
 end
