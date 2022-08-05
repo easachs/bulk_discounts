@@ -13,7 +13,7 @@ RSpec.describe 'discounts new' do
   it 'has form to add new discount' do
     fill_in "Percent", with: 30
     fill_in "Quantity", with: 5
-    click_button "Create Discount"
+    click_button "Create"
 
     expect(current_path).to eq(merchant_bulk_discounts_path(@merchant1))
     expect(page).to have_link("10% off 10 items")
