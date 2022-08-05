@@ -1,2 +1,3 @@
 <h1>Discount ID: <%= @discount.id %></h1>
 <p><%= "#{@discount.percent}% off #{@discount.quantity} items" %></p>
+<p><%= link_to "Edit Discount", edit_merchant_bulk_discount_path(@discount.merchant, @discount) %>
