@@ -46,4 +46,8 @@ RSpec.describe 'discounts index' do
     expect(page).to have_link("10% off 10 items")
     expect(page).to_not have_link("20% off 15 items")
   end
+
+  it 'has next three holidays' do
+    expect(page).to have_content("Upcoming Holidays")
+  end
 end
