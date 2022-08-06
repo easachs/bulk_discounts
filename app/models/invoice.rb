@@ -13,4 +13,17 @@ class Invoice < ApplicationRecord
   def total_revenue
     invoice_items.sum("unit_price * quantity")
   end
+
+  def discounted_amount
+    invoice_items
+    .joins(:bulk_discounts)
+    .where('invoice_items.quantity >= bulk_discounts.quantity')
+    .select('max(invoice_items.quantity * invoice_items.unit_price * (bulk_discounts.percent / 100.0)) as discount')
+    .group('invoice_items.id')
+    .sum(&:discount)
+  end
+
+  def discounted_revenue
+    total_revenue - discounted_amount
+  end
 end
