@@ -20,10 +20,11 @@
   <br>
 
   <p> Created on: <%= @invoice.created_at.strftime("%A, %B %-d, %Y") %></p>
-  <div id="discounts">
   <p>Total Revenue: <%= number_to_currency(@invoice.total_revenue) %></p>
-  <p>Bulk Discount: <%= number_to_currency(@invoice.discounted_amount) %></p>
-  <p>Discounted Revenue: <%= number_to_currency(@invoice.discounted_revenue) %></p>
+  <div id="discounts">
+  <p>Total Merchant Revenue: <%= number_to_currency(@merchant.total_revenue) %></p>
+  <p>Merchant Bulk Discount: <%= number_to_currency(@merchant.discounted_amount) %></p>
+  <p>Discounted Merchant Revenue: <%= number_to_currency(@merchant.discounted_revenue) %></p>
   </div>
 
   <h4>Customer:</h4>
