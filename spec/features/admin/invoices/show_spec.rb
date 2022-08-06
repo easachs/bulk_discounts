@@ -86,7 +86,7 @@ describe 'Admin Invoices Show Page' do
     discount_1 = merchant_1.bulk_discounts.create!(quantity: 10, percent: 25)
     discount_2 = merchant_1.bulk_discounts.create!(quantity: 15, percent: 50)
     
-    visit merchant_invoice_path(merchant_1, invoice)
+    visit admin_invoice_path(invoice)
 
     within "#discounts" do
       expect(page).to have_content("Total Revenue: $600.00")
