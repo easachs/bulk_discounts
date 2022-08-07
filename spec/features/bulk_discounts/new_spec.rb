@@ -16,9 +16,24 @@ RSpec.describe 'discounts new' do
     click_button "Create"
 
     expect(current_path).to eq(merchant_bulk_discounts_path(@merchant1))
+    expect(page).to have_content("Discount has been created!")
     expect(page).to have_link("10% off 10 items")
     expect(page).to have_link("20% off 15 items")
 
     expect(page).to have_link("30% off 5 items")
+  end
+
+  it 'sad paths' do
+    fill_in "Percent", with: 'XYZ'
+    fill_in "Quantity", with: 5
+    click_on "Create"
+
+    expect(page).to have_content("Error: All fields must be valid integers.")
+
+    fill_in "Percent", with: 30
+    fill_in "Quantity", with: 'XYZ'
+    click_on "Create"
+
+    expect(page).to have_content("Error: All fields must be valid integers.")
   end
 end
