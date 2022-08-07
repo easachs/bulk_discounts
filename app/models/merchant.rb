@@ -1,5 +1,4 @@
 class Merchant < ApplicationRecord
-  include DiscountRevenue
 
   validates_presence_of :name
   has_many :items
@@ -55,5 +54,24 @@ class Merchant < ApplicationRecord
             .group("invoices.created_at")
             .order("revenue desc", "invoices.created_at desc")
             .first&.created_at&.to_date
+  end
+
+  def total_invoice_revenue(invoice)
+    invoice_items
+    .where('invoice_items.invoice_id = ?', invoice.id)
+    .sum("invoice_items.unit_price * invoice_items.quantity")
+  end
+
+  def discounted_invoice_amount(invoice)
+    invoice_items
+    .joins(:bulk_discounts)
+    .where('invoice_items.invoice_id = ?', invoice.id)
+    .where('invoice_items.quantity >= bulk_discounts.quantity')
+    .select('max(invoice_items.quantity * invoice_items.unit_price * bulk_discounts.percent / 100.0)')
+    .group(:id).sum(&:max)
+  end
+
+  def discounted_invoice_revenue(invoice)
+    total_invoice_revenue(invoice) - discounted_invoice_amount(invoice)
   end
 end
