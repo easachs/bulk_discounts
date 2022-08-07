@@ -1,1 +1,7 @@
-<h1>Bulk Discounts</h1>
+<p><%= link_to 'Admin Dashboard', admin_dashboard_index_path %>
+ / <%= link_to 'Admin Merchants', admin_merchants_path %>
+ / <%= link_to 'Admin Invoices', admin_invoices_path %></p><br>
+<h1>Merchants</h1>
+<% @merchants.each do |merchant| %>
+  <p><%= link_to merchant.name, merchant_dashboard_index_path(merchant) %></p>
+<% end %>
