@@ -10,6 +10,7 @@ class BulkDiscountsController < ApplicationController
   end
 
   def new
+    @discount = BulkDiscount.new
   end
 
   def create
@@ -43,7 +44,7 @@ class BulkDiscountsController < ApplicationController
 
   private
   def discount_params
-    params.permit(:percent, :quantity)
+    params.require(:bulk_discount).permit(:percent, :quantity)
   end
 
   def find_merchant

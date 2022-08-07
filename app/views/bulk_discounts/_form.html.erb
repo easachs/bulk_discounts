@@ -1,0 +1,7 @@
+<%= form_with model: model, method: method, url: url, local: true do |f| %>
+  <%= f.label :percent %>
+  <%= f.number_field :percent %><br/><br/>
+  <%= f.label :quantity %>
+  <%= f.number_field :quantity %><br/><br/>
+  <%= f.submit button_text %>
+<% end %>
