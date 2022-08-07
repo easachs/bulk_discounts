@@ -1,4 +1,6 @@
 class Merchant < ApplicationRecord
+  include DiscountRevenue
+
   validates_presence_of :name
   has_many :items
   has_many :invoice_items, through: :items
