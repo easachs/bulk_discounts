@@ -1,9 +1,7 @@
-<h1>Edit Discount</h1>
-
-<%= form_with url: merchant_bulk_discount_path(@discount.merchant, @discount), method: :patch, local: true do |f| %>
-  <p><%= f.label :percent %>
-  <%= f.text_field :percent, value: @discount.percent %></p>
-  <p><%= f.label :quantity %>
-  <%= f.number_field :quantity, value: @discount.quantity %></p>
-  <p><%= f.submit 'Edit' %></p>
-<% end %> 
+<%= render partial: 'form',
+  locals: {
+    method: :patch,
+    url: merchant_bulk_discount_path(@discount.merchant, @discount),
+    local: true,
+    model: @discount,
+    button_text: 'Edit'} %>

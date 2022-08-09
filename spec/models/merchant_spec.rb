@@ -176,7 +176,7 @@ describe Merchant do
         @discount_1 = @merchant_1.bulk_discounts.create!(quantity: 10, percent: 25)
         @discount_2 = @merchant_1.bulk_discounts.create!(quantity: 15, percent: 50)
 
-        expect(@merchant_1.total_revenue).to eq(300)
+        expect(@merchant_1.total_invoice_revenue(@invoice)).to eq(300)
       end
 
       describe "discounted_amount/revenue" do
@@ -190,9 +190,9 @@ describe Merchant do
           @ii_2 = InvoiceItem.create!(invoice_id: @invoice.id, item_id: @item_2.id, quantity: 5, unit_price: 10, status: 1) # 50 = 100
           @discount = @merchant.bulk_discounts.create!(quantity: 10, percent: 25)
 
-          expect(@merchant.total_revenue).to eq(100)
-          expect(@merchant.discounted_amount).to eq(0)
-          expect(@merchant.discounted_revenue).to eq(100)
+          expect(@merchant.total_invoice_revenue(@invoice)).to eq(100)
+          expect(@merchant.discounted_invoice_amount(@invoice)).to eq(0)
+          expect(@merchant.discounted_invoice_revenue(@invoice)).to eq(100)
         end
 
         it "ex 2: one item with discount applied, one not" do
@@ -205,9 +205,9 @@ describe Merchant do
           @ii_2 = InvoiceItem.create!(invoice_id: @invoice.id, item_id: @item_2.id, quantity: 5, unit_price: 10, status: 1) # 50 -> 50 = 125
           @discount = @merchant.bulk_discounts.create!(quantity: 10, percent: 25)
 
-          expect(@merchant.total_revenue).to eq(150)
-          expect(@merchant.discounted_amount).to eq(25)
-          expect(@merchant.discounted_revenue).to eq(125)
+          expect(@merchant.total_invoice_revenue(@invoice)).to eq(150)
+          expect(@merchant.discounted_invoice_amount(@invoice)).to eq(25)
+          expect(@merchant.discounted_invoice_revenue(@invoice)).to eq(125)
         end
 
         it "ex 3: items with different discounts applied" do
@@ -221,9 +221,9 @@ describe Merchant do
           @discount_1 = @merchant.bulk_discounts.create!(quantity: 10, percent: 25)
           @discount_2 = @merchant.bulk_discounts.create!(quantity: 15, percent: 50)
 
-          expect(@merchant.total_revenue).to eq(300)
-          expect(@merchant.discounted_amount).to eq(125)
-          expect(@merchant.discounted_revenue).to eq(175)
+          expect(@merchant.total_invoice_revenue(@invoice)).to eq(300)
+          expect(@merchant.discounted_invoice_amount(@invoice)).to eq(125)
+          expect(@merchant.discounted_invoice_revenue(@invoice)).to eq(175)
         end
 
         it "ex 4: two discounts, one impossible" do
@@ -237,9 +237,9 @@ describe Merchant do
           @discount_1 = @merchant.bulk_discounts.create!(quantity: 10, percent: 25)
           @discount_2 = @merchant.bulk_discounts.create!(quantity: 20, percent: 20) #never
 
-          expect(@merchant.total_revenue).to eq(200)
-          expect(@merchant.discounted_amount).to eq(50)
-          expect(@merchant.discounted_revenue).to eq(150)
+          expect(@merchant.total_invoice_revenue(@invoice)).to eq(200)
+          expect(@merchant.discounted_invoice_amount(@invoice)).to eq(50)
+          expect(@merchant.discounted_invoice_revenue(@invoice)).to eq(150)
         end
 
         it "ex 5: two merchants on an invoice" do
@@ -258,13 +258,13 @@ describe Merchant do
           @discount_1 = @merchant_1.bulk_discounts.create!(quantity: 10, percent: 25)
           @discount_2 = @merchant_1.bulk_discounts.create!(quantity: 15, percent: 50)
           
-          expect(@merchant_1.total_revenue).to eq(300)
-          expect(@merchant_1.discounted_amount).to eq(125)
-          expect(@merchant_1.discounted_revenue).to eq(175)
+          expect(@merchant_1.total_invoice_revenue(@invoice)).to eq(300)
+          expect(@merchant_1.discounted_invoice_amount(@invoice)).to eq(125)
+          expect(@merchant_1.discounted_invoice_revenue(@invoice)).to eq(175)
 
-          expect(@merchant_2.total_revenue).to eq(300)
-          expect(@merchant_2.discounted_amount).to eq(0)
-          expect(@merchant_2.discounted_revenue).to eq(300)
+          expect(@merchant_2.total_invoice_revenue(@invoice)).to eq(300)
+          expect(@merchant_2.discounted_invoice_amount(@invoice)).to eq(0)
+          expect(@merchant_2.discounted_invoice_revenue(@invoice)).to eq(300)
         end
       end
     end

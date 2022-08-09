@@ -1,5 +1,4 @@
 class Merchant < ApplicationRecord
-  include DiscountRevenue
 
   validates_presence_of :name
   has_many :items
@@ -23,7 +22,10 @@ class Merchant < ApplicationRecord
   end
 
   def ordered_items_to_ship
-    item_ids = InvoiceItem.where("status = 0 OR status = 1").order(:created_at).pluck(:item_id)
+    item_ids = invoice_items
+    .where("invoice_items.status = 0 OR invoice_items.status = 1")
+    .order(:created_at).pluck(:item_id)
+    
     item_ids.map do |id|
       Item.find(id)
     end
@@ -55,5 +57,24 @@ class Merchant < ApplicationRecord
             .group("invoices.created_at")
             .order("revenue desc", "invoices.created_at desc")
             .first&.created_at&.to_date
+  end
+
+  def total_invoice_revenue(invoice)
+    invoice_items
+    .where('invoice_items.invoice_id = ?', invoice.id)
+    .sum("invoice_items.unit_price * invoice_items.quantity")
+  end
+
+  def discounted_invoice_amount(invoice)
+    invoice_items
+    .joins(:bulk_discounts)
+    .where('invoice_items.invoice_id = ?', invoice.id)
+    .where('invoice_items.quantity >= bulk_discounts.quantity')
+    .select('max(invoice_items.quantity * invoice_items.unit_price * bulk_discounts.percent / 100.0)')
+    .group(:id).sum(&:max)
+  end
+
+  def discounted_invoice_revenue(invoice)
+    total_invoice_revenue(invoice) - discounted_invoice_amount(invoice)
   end
 end

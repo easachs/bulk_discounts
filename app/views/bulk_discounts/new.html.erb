@@ -1,9 +1,7 @@
-<h1>Create new Discount for <%= @merchant.name %></h1>
-
-<%= form_with url: merchant_bulk_discounts_path(@merchant), method: :post, local: true do |f| %>
-  <p><%= f.label :percent %>
-  <%= f.number_field :percent %></p>
-  <p><%= f.label :quantity %>
-  <%= f.number_field :quantity %></p>
-  <p><%= f.submit 'Create' %></p>
-<% end %>
+<%= render partial: 'form',
+  locals: {
+    method: :post,
+    url: merchant_bulk_discounts_path(@merchant),
+    local: true,
+    model: @discount,
+    button_text: 'Create' } %>

@@ -35,5 +35,17 @@ RSpec.describe 'discounts new' do
     click_on "Create"
 
     expect(page).to have_content("Error: All fields must be valid integers.")
+
+    fill_in "Percent", with: 30
+    fill_in "Quantity", with: 1
+    click_on "Create"
+
+    expect(page).to have_content("Error: All fields must be valid integers.")
+
+    fill_in "Percent", with: 100
+    fill_in "Quantity", with: 2
+    click_on "Create"
+
+    expect(page).to have_content("Error: All fields must be valid integers.")
   end
 end
